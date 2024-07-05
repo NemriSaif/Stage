@@ -1,0 +1,48 @@
+
+
+section {
+    width: 100%;
+    height: 100vh;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    background: white;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+
+
+
+header ul li {
+    display: inline-block;
+    margin: 5px 5px;
+    padding: 5px 20px;
+}
+
+header .login-link {
+    cursor: pointer;
+    display: inline-block; 
+    padding: 10px 25px;
+    border: 1px solid #1d1b31;
+    border-radius: 30px;
+    transition: background-color 0.3s, color 0.3s; /* Transition background and text color */
+    color: #11101d; /* Button text color */
+    background-color: transparent; /* Transparent background */
+    text-decoration: none;
+    text-align: center; /* Center align text */
+}
+
+header .login-link:hover {
+    background-color: #1d1b31; /* Button background color on hover */
+    color: white; /* Text color on hover */
+}
+
+

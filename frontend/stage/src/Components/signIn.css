@@ -99,16 +99,3 @@ font-family: "Noto Sans JP", sans-serif;
   margin-top: 1rem;
   font-size: 1.25rem;
 }
-.connect-button {
-  background-color: #11101d; /* Dark background */
-  color: #ffffff; /* Light text for contrast */
-  padding: 10px 20px; /* Adjust padding as needed */
-  border: 2px solid #ffffff; /* Visible border */
-  box-sizing: border-box; /* Include padding and border in width and height */
-  margin: 0 auto; /* Center the button if it's not inline */
-  display: block; /* Use block to fill the container or inline-block for specific sizing */
-  max-width: 90%; /* Limit width to prevent overflow */
-  text-align: center; /* Center the text inside the button */
-  font-size: 1rem; /* Ensure font size is readable */
-  font-weight: bold; /* Ensure text is visible */
-}

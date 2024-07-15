@@ -1,8 +1,29 @@
-import React, { useState } from 'react';
 import './signIn.css'; 
+import React, { useState } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+
 
  function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    axios.post('http://localhost:3001/', {email, password})
+    .then(result => 
+      {console.log(result)
+        if(result.data === "success"){
+          console.log("success");
+          navigate('/home')
+        }
+        else if (result.data === "incorrect password") {
+          console.log("incorrect password");
+        }
+    })
+    .catch(err => console.error)
+  }
   return (
     <div className="login-container">
       <div className="card-containerL">
@@ -25,16 +46,17 @@ import { Link } from 'react-router-dom';
 
 
 
-          <form  className="form-groupL">
+          <form  className="form-groupL" onSubmit={handleSubmit}>
             <div className="form-groupL">
               <label className="form-labelL" htmlFor="username">
-              Enter your email adress
+              Enter your email adress or Username
               </label>
               <input
                 className="form-inputL"
                 id="username"
                 placeholder="Email adress"
                 type="text"
+                onChange={(e) => setEmail(e.target.value)}
 
               />
             </div>
@@ -47,14 +69,15 @@ import { Link } from 'react-router-dom';
                 id="password"
                 placeholder="Password"
                 type="password"
+                onChange={(e) => setPassword(e.target.value)}
 
               />
             </div>
             <div >
             <div>
-              <Link to="/Home" className="sign-in-btnL">
+              <button className="sign-in-btnL" type='submit'>
                 Connect
-              </Link>
+              </button>
             </div>
 
             </div>

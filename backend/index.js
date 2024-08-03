@@ -5,29 +5,43 @@ const cors = require('cors');
 const app = express();
 const UserModel = require('./models/user');
 const saltRounds = 10;
+const jwt = require("jsonwebtoken");
+const JWT_SECRET="qsdfazerty"
 
 app.use(express.json());
 app.use(cors());
 
 mongoose.connect('mongodb://127.0.0.1:27017/users');
-app.post('/', (req, res) => {
+
+
+app.post('/login', (req, res) => {
     const { email, password } = req.body;
+
     UserModel.findOne({ email: email })
     .then(user => {
         if (user) {
             bcrypt.compare(password, user.password, (err, result) => {
                 if (result) {
-                    res.json("success");
+                    // Create a token with just email and userID
+                    const token = jwt.sign(
+                        {
+                            email: user.email,
+                            userID: user._id
+                        },
+                        JWT_SECRET
+                    );
+
+                    res.status(200).json({ status: "success", token: token });
                 } else {
-                    res.json("incorrect password");
+                    res.status(400).json({ error: "Mot de passe incorrect" });
                 }
             });
         } else {
-            res.json("user not found");
+            res.status(400).json({ error: "Aucun compte avec cet e-mail n'existe" });
         }
     })
-    .catch(err => res.status(500).json(err));
-})
+    .catch(err => res.status(500).json({ error: "Erreur serveur" }));
+});
 app.post('/register', async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);

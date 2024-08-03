@@ -10,20 +10,24 @@ import { useNavigate } from 'react-router-dom';
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const handleSubmit = (e) => {
-    e.preventDefault()
-    axios.post('http://localhost:3001/', {email, password})
-    .then(result => 
-      {console.log(result)
-        if(result.data === "success"){
-          console.log("success");
-          navigate('/home')
-        }
-        else if (result.data === "incorrect password") {
-          console.log("incorrect password");
-        }
-    })
-    .catch(err => console.error)
-  }
+    e.preventDefault();
+    axios.post('http://localhost:3001/login', { email, password })
+        .then(result => {
+            console.log(result);
+            if (result.data.status === "success") {
+                localStorage.setItem("token", result.data.token);
+                console.log("token saved:", localStorage.getItem("token"));
+                navigate('/Home');
+            } else if (result.data.error === "Mot de passe incorrect") {
+                console.log("incorrect password");
+            } else if (result.data.error === "Aucun compte avec cet e-mail n'existe") {
+                console.log("user not found");
+            }
+        })
+        .catch(err => {
+            console.error(err);
+        });
+};
   return (
     <div className="login-container">
       <div className="card-containerL">

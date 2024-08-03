@@ -15,15 +15,11 @@ const Home = () => {
       </ul>
       <div className="auth-links-container" style={{ display: 'flex', gap: '10px' }}>
         <button className="login-link">
-          <Link to="/" style={{ textDecoration: 'none', color: '#11101d', transition: 'color 0.1s' }}
+          <Link to="/profile" style={{ textDecoration: 'none', color: '#11101d', transition: 'color 0.1s' }}
             onMouseOver={(e) => (e.target.style.color = 'white')} // Change color on hover
-            onMouseOut={(e) => (e.target.style.color = '#11101d')} >Login</Link>
+            onMouseOut={(e) => (e.target.style.color = '#11101d')} >Profile</Link>
         </button>
-        <button className="login-link">
-          <Link to="/register" style={{ textDecoration: 'none', color: '#11101d', transition: 'color 0.1s' }}
-            onMouseOver={(e) => (e.target.style.color = 'white')} // Change color on hover
-            onMouseOut={(e) => (e.target.style.color = '#11101d')} >Create your account</Link>
-        </button>
+        
       </div>
     </header>
     {/* Rest of the code */}

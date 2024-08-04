@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     birthDay: Date,
     phoneNumber: String,
     role: String,
+    profilePic: String
 
 })
 const UserModel = mongoose.model('Users', userSchema)

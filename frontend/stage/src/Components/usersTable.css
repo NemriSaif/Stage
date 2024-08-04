@@ -1,0 +1,71 @@
+.table-wrapper {
+    margin: 20px auto;
+    width: 80%;
+    border-radius: 8px; /* Rounded edges */
+    overflow: hidden; /* Ensure rounded corners for child elements */
+  }
+  
+  .users-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Shadow effect */
+    background-color: white; /* White background */
+    border-radius: 8px; /* Rounded edges */
+  }
+  
+  .users-table th,
+  .users-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .users-table th {
+    background-color: #f4f4f4;
+  }
+  
+  .users-table tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .table-controls {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+  }
+  
+  .search-bar {
+    padding: 8px;
+    width: 100%;
+    max-width: 250px; /* Adjust as needed */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+  }
+  
+  .pagination button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #f4f4f4;
+    cursor: pointer;
+    margin: 0 5px;
+    border-radius: 4px;
+  }
+  
+  .pagination button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  
+  .pagination span {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    margin: 0 5px;
+    border-radius: 4px;
+  }
+  

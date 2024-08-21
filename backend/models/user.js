@@ -7,7 +7,9 @@ const userSchema = new mongoose.Schema({
     birthDay: Date,
     phoneNumber: String,
     role: String,
-    profilePic: String
+    profilePic: String,
+    twoFactorAuthToken: String,
+    twoFactorAuthTokenExpiry: Date,
 
 })
 const UserModel = mongoose.model('Users', userSchema)

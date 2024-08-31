@@ -1,12 +1,4 @@
-section {
-    width: 100%;
-    height: 100vh;
-    background: linear-gradient(135deg, #654ea3, #eaafc8); /* Match gradient background */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden; /* Hide any overflow */
-}
+
 
 header {
     display: flex;

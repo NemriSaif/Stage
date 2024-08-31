@@ -22,7 +22,7 @@ function Login() {
       } else if (result.data.status === 'success') {
         localStorage.setItem('token', result.data.token);
         console.log('Token saved:', localStorage.getItem('token'));
-        navigate('/Home');
+        navigate('/Dashboard');
       } else {
         setError(result.data.error || 'Login failed');
       }

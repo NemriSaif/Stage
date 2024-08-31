@@ -1,3 +1,6 @@
+import Chart from 'chart.js/auto';
+import jsVectorMap from 'jsvectormap';
+import 'jsvectormap/dist/css/jsvectormap.min.css';
 document.addEventListener("DOMContentLoaded", function() {
 			var ctx = document.getElementById("chartjs-dashboard-line").getContext("2d");
 			var gradient = ctx.createLinearGradient(0, 0, 0, 225);

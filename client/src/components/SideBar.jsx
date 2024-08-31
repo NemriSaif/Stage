@@ -15,19 +15,19 @@ function SideBar({isOpen}) {
             </li>
 
             <li className="sidebar-item active">
-                <a className="sidebar-link" href="index.html">
+                <a className="sidebar-link" href="./Dashboard">
       <i className="align-middle" data-feather="sliders"></i> <span className="align-middle">Client's list</span>
     </a>
             </li>
 
             <li className="sidebar-item">
-                <a className="sidebar-link" href="pages-profile.html">
+                <a className="sidebar-link" href="./profile">
       <i className="align-middle" data-feather="user"></i> <span className="align-middle">Profile</span>
     </a>
             </li>
 
             <li className="sidebar-item">
-                <a className="sidebar-link" href="pages-sign-in.html">
+                <a className="sidebar-link" href="./Home">
       <i className="align-middle" data-feather="log-in"></i> <span className="align-middle">User's list</span>
     </a>
             </li>

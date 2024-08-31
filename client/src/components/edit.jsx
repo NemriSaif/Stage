@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './edit.css';
+import { FiCamera, FiSave, FiLock } from 'react-icons/fi';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Edit = () => {
     const [user, setUser] = useState(null);
@@ -18,10 +19,9 @@ const Edit = () => {
         newPassword: '',
         confirmPassword: '',
     });
-    const [passwordPopupDisabled, setPasswordPopupDisabled] = useState(true);
-    const [profilePic, setProfilePic] = useState('/images/profile-pic.png'); // Initial profile picture path
-    const [profilePicFile, setProfilePicFile] = useState(null); // To keep track of the selected file
-    const [hasChanges, setHasChanges] = useState(false); // Track if there are changes
+    const [profilePic, setProfilePic] = useState('/images/profile-pic.png');
+    const [profilePicFile, setProfilePicFile] = useState(null);
+    const [hasChanges, setHasChanges] = useState(false);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -41,7 +41,7 @@ const Edit = () => {
                     phoneNumber: response.data.phoneNumber,
                     role: response.data.role,
                 });
-                setProfilePic(response.data.profilePic || '/images/profile-pic.png'); // Set profile pic from server
+                setProfilePic(response.data.profilePic || '/images/profile-pic.png');
             } catch (error) {
                 console.error('Error fetching user data', error);
             }
@@ -51,15 +51,6 @@ const Edit = () => {
     }, []);
 
     useEffect(() => {
-        // Enable confirm button if all password fields are filled and passwords match
-        const { oldPassword, newPassword, confirmPassword } = passwordData;
-        setPasswordPopupDisabled(
-            !oldPassword || !newPassword || !confirmPassword || newPassword !== confirmPassword
-        );
-    }, [passwordData]);
-
-    useEffect(() => {
-        // Set hasChanges to true if any field in formData or profilePicFile is updated
         setHasChanges(
             Object.values(formData).some(value => value !== '') || profilePicFile !== null
         );
@@ -70,7 +61,6 @@ const Edit = () => {
             ...formData,
             [e.target.name]: e.target.value,
         });
-        setHasChanges(true); // Mark as changed
     };
 
     const handlePasswordChange = (e) => {
@@ -87,9 +77,6 @@ const Edit = () => {
             reader.onloadend = async () => {
                 setProfilePic(reader.result);
                 setProfilePicFile(file);
-                setHasChanges(true); // Mark as changed
-
-                // Automatically save the new profile picture
                 try {
                     const token = localStorage.getItem('token');
                     const formDataToSend = new FormData();
@@ -119,7 +106,7 @@ const Edit = () => {
                 },
             });
             alert('Profile updated successfully!');
-            setHasChanges(false); // Reset changes after saving
+            setHasChanges(false);
         } catch (error) {
             console.error('Error updating profile', error);
         }
@@ -140,167 +127,112 @@ const Edit = () => {
         }
     };
 
-    if (!user) return <div>Loading...</div>;
+    if (!user) return <div className="d-flex justify-content-center align-items-center" style={{height: '100vh'}}><div className="spinner-border" role="status"><span className="visually-hidden">Loading...</span></div></div>;
 
     return (
-        <section>
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <ul>
-                    <li>Profile</li>
-                </ul>
-            </header>
-            <div className="profile-container">
-                <div className="form-container">
-                    <h2>General Information</h2>
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label>Username</label>
-                            <input
-                                type="text"
-                                name="username"
-                                placeholder="Enter your username"
-                                value={formData.username}
-                                onChange={handleChange}
-                            />
+        <main className="content">
+            <div className="container-fluid p-0">
+                <h1 className="h3 mb-3">Edit Profile</h1>
+                <div className="row">
+                    <div className="col-md-4 col-xl-3">
+                        <div className="card mb-3">
+                            <div className="card-header">
+                                <h5 className="card-title mb-0">Profile Picture</h5>
+                            </div>
+                            <div className="card-body text-center">
+                                <img src={profilePic} alt="Profile" className="img-fluid rounded-circle mb-2" width="128" height="128" />
+                                <div className="mt-2">
+                                    <label htmlFor="fileInput" className="btn btn-primary">
+                                        <FiCamera className="feather me-1" /> Change Picture
+                                    </label>
+                                    <input
+                                        type="file"
+                                        id="fileInput"
+                                        accept="image/*"
+                                        onChange={handleProfilePicChange}
+                                        style={{ display: 'none' }}
+                                    />
+                                </div>
+                            </div>
+                            <hr className="my-0" />
+                            <div className="card-body">
+                                <h5 className="h6 card-title">About</h5>
+                                <ul className="list-unstyled mb-0">
+                                    <li className="mb-1"><span className="text-muted">Username: </span>{formData.username}</li>
+                                    <li className="mb-1"><span className="text-muted">Email: </span>{formData.email}</li>
+                                    <li className="mb-1"><span className="text-muted">Phone: </span>{formData.phoneNumber}</li>
+                                    <li className="mb-1"><span className="text-muted">Role: </span>{formData.role}</li>
+                                </ul>
+                            </div>
                         </div>
-                        <div className="form-group">
-                            <label>Email</label>
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Enter your email"
-                                value={formData.email}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Full Name</label>
-                            <input
-                                type="text"
-                                name="fullname"
-                                placeholder="Enter your full name"
-                                value={formData.fullname}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Birthday</label>
-                            <input
-                                type="date"
-                                name="birthDay"
-                                value={formData.birthDay}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Phone Number</label>
-                            <input
-                                type="tel"
-                                name="phoneNumber"
-                                placeholder="Enter your phone number"
-                                value={formData.phoneNumber}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Role</label>
-                            <input
-                                type="text"
-                                name="role"
-                                placeholder="Enter your role"
-                                value={formData.role}
-                                readOnly
-                            />
-                        </div>
-                        <button
-                            type="submit"
-                            className={`save-btn ${hasChanges ? 'active' : 'inactive'}`}
-                            disabled={!hasChanges}
-                        >
-                            Save All
-                        </button>
-                        <button
-                            type="button"
-                            className="change-password-btn"
-                            onClick={() => setShowPasswordPopup(true)}
-                        >
-                            Change Password
-                        </button>
-                    </form>
-                </div>
-                <div className="profile-card">
-                    <div className="profile-photo-container">
-                        <img
-                            src={profilePic}
-                            alt="Profile"
-                            className="profile-photo"
-                            onClick={() => document.getElementById('fileInput').click()}
-                        />
-                        <input
-                            type="file"
-                            id="fileInput"
-                            accept="image/*"
-                            onChange={handleProfilePicChange}
-                            style={{ display: 'none' }}
-                        />
                     </div>
-                    <h3>{formData.fullname}</h3>
-                    <p>@{formData.username}</p>
-                    <p>{formData.email}</p>
-                    <p>{formData.phoneNumber}</p>
-                    <p>{formData.birthDay}</p>
-                    <p>{formData.role}</p>
+                    <div className="col-md-8 col-xl-9">
+                        <div className="card">
+                            <div className="card-header">
+                                <h5 className="card-title mb-0">Edit Profile Information</h5>
+                            </div>
+                            <div className="card-body">
+                                <form onSubmit={handleSubmit}>
+                                    <div className="mb-3">
+                                        <label className="form-label">Full Name</label>
+                                        <input type="text" className="form-control" name="fullname" value={formData.fullname} onChange={handleChange} />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Email</label>
+                                        <input type="email" className="form-control" name="email" value={formData.email} onChange={handleChange} />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Phone Number</label>
+                                        <input type="tel" className="form-control" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Birthday</label>
+                                        <input type="date" className="form-control" name="birthDay" value={formData.birthDay} onChange={handleChange} />
+                                    </div>
+                                    <button type="submit" className="btn btn-primary" disabled={!hasChanges}>
+                                        <FiSave className="feather me-1" /> Save Changes
+                                    </button>
+                                    <button type="button" className="btn btn-secondary ms-2" onClick={() => setShowPasswordPopup(true)}>
+                                        <FiLock className="feather me-1" /> Change Password
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             {showPasswordPopup && (
-                <div className="password-popup">
-                    <div className="password-popup-content">
-                        <h3>Change Password</h3>
-                        <div className="form-group">
-                            <label>Old Password</label>
-                            <input
-                                type="password"
-                                name="oldPassword"
-                                placeholder="Enter your old password"
-                                value={passwordData.oldPassword}
-                                onChange={handlePasswordChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>New Password</label>
-                            <input
-                                type="password"
-                                name="newPassword"
-                                placeholder="Enter new password"
-                                value={passwordData.newPassword}
-                                onChange={handlePasswordChange}
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label>Confirm New Password</label>
-                            <input
-                                type="password"
-                                name="confirmPassword"
-                                placeholder="Confirm new password"
-                                value={passwordData.confirmPassword}
-                                onChange={handlePasswordChange}
-                            />
-                        </div>
-                        <div className="password-popup-actions">
-                            <button
-                                className={`confirm-button ${passwordPopupDisabled ? 'disabled' : ''}`}
-                                onClick={handlePasswordSubmit}
-                                disabled={passwordPopupDisabled}
-                            >
-                                Confirm
-                            </button>
-                            <button onClick={() => setShowPasswordPopup(false)}>Cancel</button>
+                <div className="modal fade show d-block" tabIndex="-1" role="dialog">
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Change Password</h5>
+                                <button type="button" className="btn-close" onClick={() => setShowPasswordPopup(false)} aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                                <div className="mb-3">
+                                    <label className="form-label">Old Password</label>
+                                    <input type="password" className="form-control" name="oldPassword" value={passwordData.oldPassword} onChange={handlePasswordChange} />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label">New Password</label>
+                                    <input type="password" className="form-control" name="newPassword" value={passwordData.newPassword} onChange={handlePasswordChange} />
+                                </div>
+                                <div className="mb-3">
+                                    <label className="form-label">Confirm New Password</label>
+                                    <input type="password" className="form-control" name="confirmPassword" value={passwordData.confirmPassword} onChange={handlePasswordChange} />
+                                </div>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={() => setShowPasswordPopup(false)}>Cancel</button>
+                                <button type="button" className="btn btn-primary" onClick={handlePasswordSubmit}>Change Password</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             )}
-        </section>
+        </main>
     );
 };
 
